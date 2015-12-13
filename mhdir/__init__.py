@@ -29,6 +29,7 @@ next = copy(show)
 next.__name__ = 'next'
 next.__doc__ = SHOW_DOC % 'Folder (+folder) in which to display the next message, defaults to current folder'
 
+def repl(
 
 DEFAULT_FROM = 'Thomas Levine <_@thomaslevine.com>'
 
