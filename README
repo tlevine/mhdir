@@ -6,3 +6,5 @@ interface to maildirs
 References
 
 * `MH & nmh: Email for Users & Programmers <http://rand-mh.sourceforge.net/>`_
+
+Much of the documentation and function signatures are copied from nmh.
