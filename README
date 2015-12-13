@@ -1,0 +1,8 @@
+mhdir
+======
+An `mh <https://en.wikipedia.org/wiki/MH_Message_Handling_System>`_-style
+interface to maildirs
+
+References
+
+* `MH & nmh: Email for Users & Programmers <http://rand-mh.sourceforge.net/>`_
