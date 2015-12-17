@@ -63,12 +63,6 @@ class Current(object):
             self._message_path.unlink()
         self._message_path.symlink_to(target)
 
-c = Current('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
-print(c.folder)
-# c.folder = '/Users/t/tom/maildir/hot/_@thomaslevine.com/INBOX'
-c.folder = 'INBOX'
-c.message = 'cur/1440863938_0.9286._,U=98351,FMD5=7e33429f656f1e6e9d79b29c3f82c57e:2,S'
-
 def folder_messages(folder: Path):
     for sub in folder.iterdir():
         if sub.name in ['new', 'cur', 'tmp']:
@@ -89,3 +83,11 @@ def prev_cur_next(current_message):
             results['next'] = message
             break
     return results
+
+if __name__ == '__main__':
+    c = Current('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
+    print(c.folder)
+    # c.folder = '/Users/t/tom/maildir/hot/_@thomaslevine.com/INBOX'
+    c.folder = 'INBOX'
+    c.message = 'cur/1440863938_0.9286._,U=98351,FMD5=7e33429f656f1e6e9d79b29c3f82c57e:2,S'
+
