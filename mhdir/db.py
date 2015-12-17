@@ -75,3 +75,17 @@ def folder_messages(folder: Path):
             for subsub in sub.iterdir():
                 if re.match(r'^[0-9]', subsub.name):
                     yield subsub
+
+def prev_cur_next(current_message):
+    base = current_message.parent.name, current_message.name.split(':')[0]
+    results = {}
+    for message in folder_messages(current_message.parent.parent):
+        this = message.parent.name, message.name.split(':')[0]
+        if this < base:
+            results['prev'] = message
+        elif this == base:
+            results['show'] = message
+        elif this > base:
+            results['next'] = message
+            break
+    return results
