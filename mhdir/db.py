@@ -41,20 +41,28 @@ class Current(object):
 
     @property
     def _message_path(self):
-        return os.readlink(self._folder_path)
+        if not os.path.islink(self._folder_path):
+            raise ValueError('Set the current folder first.')
+        return os.path.join(self._maildir, os.readlink(self._folder_path), '.mhdir-current-message')
 
     @property
     def message(self):
-        if os.path.islink(self._folder_path) and os.path.islink(self._message_path):
+        if os.path.islink(self._message_path):
             return os.readlink(self._message_path)
 
     @message.setter
-    def message(self, dst):
+    def message(self, src):
+        if src[:4] not in {'new/', 'cur/', 'tmp/'}:
+            raise ValueError('Message path must start with "new/", "cur/", or "tmp/".')
+        if '/' in src[4:]:
+            raise ValueError('Aside from the fourth character, the message path must contain no slashes.')
+
         if os.path.islink(self._message_path):
             os.unlink(self._message_path)
-        os.symlink(dst, self._message_path)
+        os.symlink(src, self._message_path)
 
 c = Current('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
 print(c.folder)
 # c.folder = '/Users/t/tom/maildir/hot/_@thomaslevine.com/INBOX'
 c.folder = 'INBOX'
+c.message = 'cur/1440863938_0.9286._,U=98351,FMD5=7e33429f656f1e6e9d79b29c3f82c57e:2,S'
