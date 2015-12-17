@@ -1,36 +1,34 @@
+'''
+The database directory has this structure. ::
+
+    ./current -> ./folders/Lists
+    ./folders/INBOX/ # some-message-id
+    ./folders/Lists/ # other-message-id
+    ./folders/Sent/ # blah@blah.blah
+
+'''
 import os
 
-from persistent import Persistent
-import ZODB, ZODB.FileStorage
+class Current(object):
 
-DIR = os.path.expanduser('~/.mhdir')
-os.makedirs(DIR, exist_ok = True)
-DB = os.path.join(DIR, 'db')
-MAILDIR = os.path.join(os.path.expanduser('~'), 'safe', 'maildir', 'hot', '_@thomaslevine.com')
+    def __init__(self, directory):
+        os.makedirs(os.path.join(directory, 'folders'), exist_ok = True)
+        self._directory = directory
 
-class Folder(Persistent):
-    def __init__(self, path, current = None):
-        self.current = current
-        self.path = path
     def __repr__(self):
-        return 'Folder(%s, current = %s)' % (repr(self.path), repr(self.current))
+        return 'Current(%s)' % repr(self._directory)
 
-storage = ZODB.FileStorage.FileStorage(DB)
-db = ZODB.DB(storage)
-connection = db.open()
-dbroot = connection.root()
+    @property
+    def folder(self):
+        filename = os.path.join(self._directory, 'current')
+        if os.path.isfile(filename):
+            with open(filename) as fp:
+                y = fp.read()
+            return y.strip()
 
-from BTrees.OOBTree import OOBTree
-if 'folders' not in dbroot:
-    dbroot['folders'] = OOBTree()
+    @folder.setter
+    def folder(self, x):
+        filename = os.path.join(self._directory, 'current')
+        with open(filename, 'w') as fp:
+            fp.write(x)
 
-for folder in ['INBOX', 'Sent']:
-    if folder not in dbroot['folders']:
-        dbroot['folders'][folder] = Folder(os.path.join(MAILDIR, folder))
-
-print(dbroot['folders']['INBOX'])
-dbroot['folders']['INBOX'].current = 'aoeu'
-
-#import transaction
-#transaction.commit()
-#storage.close()
