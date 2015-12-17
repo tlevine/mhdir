@@ -6,7 +6,9 @@ interface to maildirs
 References
 
 * `MH & nmh: Email for Users & Programmers <http://rand-mh.sourceforge.net/>`_
-* `19.4. mailbox — Manipulate mailboxes in various formats <https://docs.python.org/3.5/library/mailbox.html>`_
+* The `mailbox <https://docs.python.org/3.5/library/mailbox.html>`_ package is
+  hard-coded for maildirs with ``.``-terminated prefixes. And the package
+  doesn't do much overall.
 * `offlineimap <http://offlineimap.org/documentation.html>`_
 
 Much of the documentation and function signatures are copied from nmh.
