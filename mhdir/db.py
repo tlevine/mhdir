@@ -26,42 +26,42 @@ class Current(object):
 
     @property
     def folder(self):
-        if os.path.islink(self._folder_path):
-            return os.readlink(self._folder_path)
+        if self._folder_path.is_symlink():
+            return self._folder_path.resolve()
 
     @folder.setter
-    def folder(self, src):
-        if '/' in src:
+    def folder(self, target):
+        if '/' in target:
             raise ValueError('Folder name may not contain a slash.')
 
-        if (self._maildir / src).is_dir():
+        if (self._maildir / target).is_dir():
             if self._folder_path.is_symlink():
-                self._folder_path.unlink(self._folder_path)
-            self._folder_path.symlink_to(src)
+                self._folder_path.unlink()
+            self._folder_path.symlink_to(target)
         else:
-            raise NotADirectoryError(src)
+            raise NotADirectoryError(target)
 
     @property
     def _message_path(self):
-        if not os.path.islink(self._folder_path):
+        if not self._folder_path.is_symlink():
             raise ValueError('Set the current folder first.')
-        return os.path.join(self._maildir, os.readlink(self._folder_path), '.mhdir-current-message')
+        return self._maildir / os.readlink(str(self._folder_path)) / '.mhdir-current-message'
 
     @property
     def message(self):
-        if os.path.islink(self._message_path):
-            return os.readlink(self._message_path)
+        if self._message_path.is_symlink():
+            return self._message_path.resolve()
 
     @message.setter
-    def message(self, src):
-        if src[:4] not in {'new/', 'cur/', 'tmp/'}:
+    def message(self, target):
+        if target[:4] not in {'new/', 'cur/', 'tmp/'}:
             raise ValueError('Message path must start with "new/", "cur/", or "tmp/".')
-        if '/' in src[4:]:
+        if '/' in target[4:]:
             raise ValueError('Aside from the fourth character, the message path must contain no slashes.')
 
-        if os.path.islink(self._message_path):
-            os.unlink(self._message_path)
-        os.symlink(src, self._message_path)
+        if self._message_path.is_symlink():
+            self._message_path.unlink()
+        self._message_path.symlink_to(target)
 
 c = Current('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
 print(c.folder)
