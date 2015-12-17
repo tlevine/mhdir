@@ -1,8 +1,11 @@
+
+
 def show(thing,
          showproc = None, showmimeproc = None,
          nocheckmime: bool = False,
          noheader: bool = False,
          draft: bool = False):
+    pass
 
 SHOW_DOC = \
     '''
@@ -15,12 +18,10 @@ SHOW_DOC = \
     '''
 
 from copy import copy
-show.__doc__ = SHOW_DOC % 'Folder (+folder) or message to display, defaults current message in current folder'
+show.__doc__ = SHOW_DOC % 'Folder (+folder) or message (message-id) to display, defaults current message in current folder'
 prev = copy(show)
 prev.__name__ = 'prev'
 prev.__doc__ = SHOW_DOC % 'Folder (+folder) in which to display the previous message, defaults to current folder'
 next = copy(show)
 next.__name__ = 'next'
 next.__doc__ = SHOW_DOC % 'Folder (+folder) in which to display the next message, defaults to current folder'
-
-def repl(
