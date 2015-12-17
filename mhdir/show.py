@@ -1,11 +1,17 @@
+from .db import Current
 
+MAILDIR = Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
 
 def show(thing,
          showproc = None, showmimeproc = None,
          nocheckmime: bool = False,
          noheader: bool = False,
-         draft: bool = False):
-    pass
+         draft: bool = False,
+         maildir: Path = MAILDIR):
+
+    current = Current(MAILDIR)
+    if thing.startswith('+'):
+        folder = thing[1:]
 
 SHOW_DOC = \
     '''

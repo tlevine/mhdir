@@ -12,9 +12,9 @@ from pathlib import Path
 import re
 
 class Current(object):
-
+    # TODO: Store this as formal IMAP messages so they sync
     def __init__(self, maildir):
-        self._maildir = Path(maildir)
+        self._maildir = maildir
         self._maildir.mkdir(exist_ok = True)
 
     def __repr__(self):
@@ -85,7 +85,7 @@ def prev_cur_next(current_message):
     return results
 
 if __name__ == '__main__':
-    c = Current('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
+    c = Current(Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/'))
     print(c.folder)
     # c.folder = '/Users/t/tom/maildir/hot/_@thomaslevine.com/INBOX'
     c.folder = 'INBOX'
