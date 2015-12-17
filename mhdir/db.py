@@ -24,20 +24,21 @@ class Current(object):
 
     @property
     def folder(self):
-        if os.path.exists(self._current_path):
+        if os.path.islink(self._current_path):
             return os.readlink(self._current_path)
 
     @folder.setter
     def folder(self, dst):
-        if os.path.exists(self._current_path):
+        if os.path.islink(self._current_path):
             os.unlink(self._current_path)
         os.symlink(dst, self._current_path)
 
     @property
     def message(self):
-        with open(self._current_path) as fp:
-            path = fp.read()
-        return path.strip()
+        if os.path.islink(self._current_path):
+            with open(self._current_path) as fp:
+                path = fp.read()
+            return path.strip()
 
     @message.setter
     def message(self, x):
