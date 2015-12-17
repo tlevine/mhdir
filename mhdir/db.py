@@ -9,14 +9,31 @@ The database directory has this structure. ::
 '''
 import os
 
-class Current(object):
+class SymlinkPointer(object):
 
     def __init__(self, directory):
-        os.makedirs(os.path.join(directory, 'folders'), exist_ok = True)
+        os.makedirs(directory, exist_ok = True)
         self._directory = directory
 
     def __repr__(self):
-        return 'Current(%s)' % repr(self._directory)
+        return 'SymlinkMap(%s)' % repr(self._directory)
+
+    @property
+    def value(self):
+        return os.readlink(os.path.join(self._directory, '.pointer'))
+
+    @value.setter
+    def value(self, dst):
+        src = os.path.join(self._directory, '.pointer')
+        os.symlink(src, dst)
+
+class CurrentFolder(object):
+
+    def __init__(self, file):
+        self._file = file
+
+    def __repr__(self):
+        return 'Current(%s)' % repr(self._file)
 
     @property
     def folder(self):
