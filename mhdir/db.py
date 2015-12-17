@@ -9,6 +9,7 @@ The database maildir has this structure. ::
 '''
 import os
 from pathlib import Path
+import re
 
 class Current(object):
 
