@@ -14,15 +14,15 @@ import re
 class Current(object):
 
     def __init__(self, maildir):
-        os.makedirs(maildir, exist_ok = True)
-        self._maildir = maildir
+        self._maildir = Path(maildir)
+        self._maildir.mkdir(exist_ok = True)
 
     def __repr__(self):
         return 'Current(%s)' % repr(self._maildir)
 
     @property
     def _folder_path(self):
-        return os.path.join(self._maildir, '.mhdir-current-folder')
+        return self._maildir / '.mhdir-current-folder'
 
     @property
     def folder(self):
@@ -34,10 +34,10 @@ class Current(object):
         if '/' in src:
             raise ValueError('Folder name may not contain a slash.')
 
-        if os.path.isdir(os.path.join(self._maildir, src)):
-            if os.path.islink(self._folder_path):
-                os.unlink(self._folder_path)
-            os.symlink(src, self._folder_path)
+        if (self._maildir / src).is_dir():
+            if self._folder_path.is_symlink():
+                self._folder_path.unlink(self._folder_path)
+            self._folder_path.symlink_to(src)
         else:
             raise NotADirectoryError(src)
 
