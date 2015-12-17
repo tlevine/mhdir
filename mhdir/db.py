@@ -44,6 +44,3 @@ class Current(object):
     def message(self, x):
         with open(self._current_path, 'w') as fp:
             fp.write(x)
-
-abc =  Current('/tmp/abc')
-print(abc.folder)
