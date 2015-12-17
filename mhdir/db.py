@@ -8,6 +8,7 @@ The database maildir has this structure. ::
 
 '''
 import os
+from pathlib import Path
 
 class Current(object):
 
@@ -66,3 +67,10 @@ print(c.folder)
 # c.folder = '/Users/t/tom/maildir/hot/_@thomaslevine.com/INBOX'
 c.folder = 'INBOX'
 c.message = 'cur/1440863938_0.9286._,U=98351,FMD5=7e33429f656f1e6e9d79b29c3f82c57e:2,S'
+
+def folder_messages(folder: Path):
+    for sub in folder.iterdir():
+        if sub.name in ['new', 'cur', 'tmp']:
+            for subsub in sub.iterdir():
+                if re.match(r'^[0-9]', subsub.name):
+                    yield subsub
