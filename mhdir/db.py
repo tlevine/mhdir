@@ -19,28 +19,36 @@ class Current(object):
         return 'Current(%s)' % repr(self._directory)
 
     @property
-    def _current_path(self):
+    def _folder_path(self):
         return os.path.join(self._directory, '.current')
 
     @property
     def folder(self):
-        if os.path.islink(self._current_path):
-            return os.readlink(self._current_path)
+        if os.path.islink(self._folder_path):
+            return os.readlink(self._folder_path)
 
     @folder.setter
     def folder(self, dst):
-        if os.path.islink(self._current_path):
-            os.unlink(self._current_path)
-        os.symlink(dst, self._current_path)
+        if '/' in dst:
+            raise ValueError('Folder must not contain slashes.')
+        if os.path.islink(self._folder_path):
+            os.unlink(self._folder_path)
+        os.symlink(os.path.join(self._directory, dst), self._folder_path)
+
+    @property
+    def _message_path(self):
+        print(self._folder_path)
+        return os.readlink(self._folder_path)
 
     @property
     def message(self):
-        if os.path.islink(self._current_path):
-            with open(self._current_path) as fp:
-                path = fp.read()
-            return path.strip()
+        if os.path.islink(self._folder_path) and os.path.islink(self._message_path):
+            return os.readlink(self._message_path)
 
     @message.setter
-    def message(self, x):
-        with open(self._current_path, 'w') as fp:
-            fp.write(x)
+    def message(self, dst):
+        if os.path.islink(self._message_path):
+            os.unlink(self._message_path)
+        os.symlink(dst, self._message_path)
+
+c = Current('/tmp/blah')
