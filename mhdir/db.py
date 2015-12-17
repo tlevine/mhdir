@@ -9,43 +9,40 @@ The database directory has this structure. ::
 '''
 import os
 
-class SymlinkPointer(object):
+class Current(object):
 
     def __init__(self, directory):
         os.makedirs(directory, exist_ok = True)
         self._directory = directory
 
     def __repr__(self):
-        return 'SymlinkMap(%s)' % repr(self._directory)
+        return 'Current(%s)' % repr(self._directory)
 
     @property
-    def value(self):
-        return os.readlink(os.path.join(self._directory, '.pointer'))
-
-    @value.setter
-    def value(self, dst):
-        src = os.path.join(self._directory, '.pointer')
-        os.symlink(src, dst)
-
-class CurrentFolder(object):
-
-    def __init__(self, file):
-        self._file = file
-
-    def __repr__(self):
-        return 'Current(%s)' % repr(self._file)
+    def _current_path(self):
+        return os.path.join(self._directory, '.current')
 
     @property
     def folder(self):
-        filename = os.path.join(self._directory, 'current')
-        if os.path.isfile(filename):
-            with open(filename) as fp:
-                y = fp.read()
-            return y.strip()
+        if os.path.exists(self._current_path):
+            return os.readlink(self._current_path)
 
     @folder.setter
-    def folder(self, x):
-        filename = os.path.join(self._directory, 'current')
-        with open(filename, 'w') as fp:
+    def folder(self, dst):
+        if os.path.exists(self._current_path):
+            os.unlink(self._current_path)
+        os.symlink(dst, self._current_path)
+
+    @property
+    def message(self):
+        with open(self._current_path) as fp:
+            path = fp.read()
+        return path.strip()
+
+    @message.setter
+    def message(self, x):
+        with open(self._current_path, 'w') as fp:
             fp.write(x)
 
+abc =  Current('/tmp/abc')
+print(abc.folder)
