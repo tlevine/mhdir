@@ -55,6 +55,9 @@ class Current(object):
 
     @message.setter
     def message(self, target):
+        if target in messageid_path:
+            target = str(Path(target).relative_to(self._maildir))
+
         if target[:4] not in {'new/', 'cur/', 'tmp/'}:
             raise ValueError('Message path must start with "new/", "cur/", or "tmp/".')
         if '/' in target[4:]:
@@ -99,6 +102,9 @@ class CSVMap(dict):
     def __setitem__(self, key, value):
         self._writer.writerow((key, value))
         super(CSVMap, self).__setitem__(key, value)
+
+messageid_path = CSVMap(os.path.expanduser('~/.mhdir-messageid-path'))
+path_messageid = CSVMap(os.path.expanduser('~/.mhdir-path-messageid'))
 
 if __name__ == '__main__':
     c = Current(Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/'))

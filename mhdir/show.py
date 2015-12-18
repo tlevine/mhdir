@@ -10,6 +10,7 @@ whatnext
 
 '''
 from pathlib import Path
+from email import message_from_binary_file
 
 from .db import Current
 
@@ -24,7 +25,12 @@ def show(thing,
 
     current = Current(MAILDIR)
     if thing.startswith('+'):
-        folder = thing[1:]
+        current.folder = thing[1:]
+    else:
+        current.message = thing
+
+    with open(filename, 'rb') as fp:
+        message_file = message_from_binary_file(fp)
 
 SHOW_DOC = \
     '''
