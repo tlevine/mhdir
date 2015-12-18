@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 from . import parse
-from .db import CSVMap
+from .db import MHDir
 
 MAILDIR = Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
 
@@ -19,8 +19,7 @@ def inc():
     1. If the message-id lookup doesn't exist, read everything in "cur" and add to the message-id lookup cache.
     2. Read everything in "new", add it to the message-id cache, and move it to "cur".
     '''
-    messageid_path = CSVMap(os.path.expanduser('~/.mhdir-messageid-path'))
-    path_messageid = CSVMap(os.path.expanduser('~/.mhdir-path-messageid'))
+    m = MHDir(MAILDIR)
     for folder in MAILDIR.iterdir():
 
         # Move stuff from new to cur.
@@ -32,12 +31,12 @@ def inc():
             mail.rename(folder / 'cur' / newname)
 
         # Index the stuff in cur.
-        for mail in (folder / 'cur').iterdir():
-            if str(mail) not in path_messageid:
+        for mail in (folder / 'cur'):
+            if str(mail) not in m.path_messageid:
                 with mail.open('rb') as fp:
                     message_id = parse.message_id(fp)
-                messageid_path[message_id] = str(mail)
-                path_messageid[str(mail)] = message_id
+                m.messageid_path[message_id] = str(mail)
+                m.path_messageid[str(mail)] = message_id
 
 if __name__ == '__main__':
     inc()
