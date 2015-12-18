@@ -85,20 +85,20 @@ def prev_cur_next(current_message):
             break
     return results
 
-class MessageIds(dict):
+class CSVMap(dict):
     def __init__(self, filename):
+        super(CSVMap, self).__init__()
         if os.path.exists(filename):
             fp = open(filename, 'a+')
             fp.seek(0)
-            for row in csv.DictReader(fp):
-                self[row['message-id']] = row['file-name']
+            self.update(dict(csv.reader(fp)))
         else:
             fp = open(filename, 'a+')
-        self._writer = csv.DictWriter(fp, fieldnames = ['message-id', 'file-name'])
+        self._writer = csv.writer(fp)
 
     def __setitem__(self, key, value):
-        self._writer.writerow({'message-id': key, 'file-name': value})
-        super(MessageIds, self).__setitem__(key, value)
+        self._writer.writerow((key, value))
+        super(CSVMap, self).__setitem__(key, value)
 
 if __name__ == '__main__':
     c = Current(Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/'))

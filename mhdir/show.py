@@ -9,6 +9,8 @@ show, prev, next
 whatnext
 
 '''
+from pathlib import Path
+
 from .db import Current
 
 MAILDIR = Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
