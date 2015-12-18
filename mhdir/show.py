@@ -28,9 +28,40 @@ def show(thing,
         current.folder = thing[1:]
     else:
         current.message = thing
+    if current.message:
+        with current.message.open('rb') as fp:
+            message_file = message_from_binary_file(fp)
+    else:
+        print('No messages')
 
-    with open(filename, 'rb') as fp:
-        message_file = message_from_binary_file(fp)
+def body():
+    def clean_payload(message, payload):
+        if 'html' in message.get_content_type().lower():
+            payload = clean_html(payload)
+        return payload
+    def decode_header(header):
+        '''
+        Decode header with different encodings.
+        '''
+        def f(content, charset):
+            if isinstance(content, str):
+                return content
+            elif charset == None:
+                return content.decode('utf-8')
+            else:
+                return content.decode(charset)
+        return ''.join(f(*args) for args in email.header.decode_header(header))
+    def _body(message):
+        if message.is_multipart():
+            payload = message.get_payload()[0].get_payload(decode = True)
+            try:
+                body = decode_charset(message, payload)
+            except ValueError:
+                body = ''
+        else:
+            body = message.get_payload()
+        return clean_payload(message, body)
+
 
 SHOW_DOC = \
     '''

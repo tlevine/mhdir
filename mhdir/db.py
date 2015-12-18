@@ -35,12 +35,21 @@ class Current(object):
         if '/' in target:
             raise ValueError('Folder name may not contain a slash.')
 
+        # Set current folder.
         if (self._maildir / target).is_dir():
             if self._folder_path.is_symlink():
                 self._folder_path.unlink()
             self._folder_path.symlink_to(target)
         else:
             raise NotADirectoryError(target)
+
+        # Set current message
+        if self.message == None:
+            messages = self.folder.glob('cur/*')
+            try:
+                self.message = next(messages)
+            except StopIteration:
+                pass
 
     @property
     def _message_path(self):
