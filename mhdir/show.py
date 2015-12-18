@@ -1,3 +1,19 @@
+'''
+inc
+
+1. If the message-id lookup doesn't exist, read everything in "cur" and add to the message-id lookup cache.
+2. Read everything in "new", add it to the message-id cache, and move it to "cur".
+
+show, prev, next
+
+1. If a folder or message is specified, change the current message.
+2. Open the current message with the email module.
+3. Display the email in some reasonable way like how nmh does it.
+4. Run whatnext
+
+whatnext
+
+'''
 from .db import Current
 
 MAILDIR = Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
