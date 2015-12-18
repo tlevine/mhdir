@@ -2,9 +2,9 @@
 The database maildir has this structure. ::
 
     ./current -> ./folders/Lists
-    ./folders/INBOX/ # some-message-id
-    ./folders/Lists/ # other-message-id
-    ./folders/Sent/ # blah@blah.blah
+    ./folders/INBOX/ -> /some/message
+    ./folders/Lists/ -> /other/message
+    ./folders/Sent/ -> /blah/blah
 
 '''
 import os
