@@ -11,4 +11,4 @@ def message_id(fp):
         if m:
             return m.group(1).decode('ascii')
     else:
-        logger.warning('No message-id in fp.name')
+        logger.warning('No message-id in %s' % fp.name)
