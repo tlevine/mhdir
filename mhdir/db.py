@@ -12,11 +12,14 @@ from pathlib import Path
 import re
 import csv
 
-class Current(object):
+class MHDir(object):
     # TODO: Store this as formal IMAP messages so they sync
     def __init__(self, maildir):
         self._maildir = maildir
         self._maildir.mkdir(exist_ok = True)
+        
+        self.messageid_path = CSVMap(maildir / '.mhdir-messageid-path')
+        self.path_messageid = CSVMap(maildir / '.mhdir-path-messageid')
 
     def __repr__(self):
         return 'Current(%s)' % repr(self._maildir)
@@ -64,7 +67,7 @@ class Current(object):
 
     @message.setter
     def message(self, target):
-        if target in messageid_path:
+        if target in self.messageid_path:
             target = str(Path(target).relative_to(self._maildir))
 
         if target[:4] not in {'new/', 'cur/', 'tmp/'}:
@@ -111,9 +114,6 @@ class CSVMap(dict):
     def __setitem__(self, key, value):
         self._writer.writerow((key, value))
         super(CSVMap, self).__setitem__(key, value)
-
-messageid_path = CSVMap(os.path.expanduser('~/.mhdir-messageid-path'))
-path_messageid = CSVMap(os.path.expanduser('~/.mhdir-path-messageid'))
 
 if __name__ == '__main__':
     c = Current(Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/'))
