@@ -115,11 +115,3 @@ class CSVMap(dict):
     def __setitem__(self, key, value):
         self._writer.writerow((key, value))
         super(CSVMap, self).__setitem__(key, value)
-
-if __name__ == '__main__':
-    c = Current(Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/'))
-    print(c.folder)
-    # c.folder = '/Users/t/tom/maildir/hot/_@thomaslevine.com/INBOX'
-    c.folder = 'INBOX'
-    c.message = 'cur/1440863938_0.9286._,U=98351,FMD5=7e33429f656f1e6e9d79b29c3f82c57e:2,S'
-    print(prev_cur_next(c.message))
