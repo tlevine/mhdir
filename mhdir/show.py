@@ -13,7 +13,7 @@ from pathlib import Path
 from email import message_from_binary_file
 
 from . import parse
-from .db import Current
+from .db import MHDir
 
 MAILDIR = Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
 
@@ -24,7 +24,7 @@ def show(thing,
          draft: bool = False,
          maildir: Path = MAILDIR):
 
-    current = Current(MAILDIR)
+    current = MHDir(MAILDIR)
     if thing.startswith('+'):
         current.folder = thing[1:]
     else:

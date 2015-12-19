@@ -101,14 +101,14 @@ def prev_cur_next(current_message):
     return results
 
 class CSVMap(dict):
-    def __init__(self, filename):
+    def __init__(self, file):
         super(CSVMap, self).__init__()
-        if os.path.exists(filename):
-            fp = open(filename, 'a+')
+        if file.exists():
+            fp = file.open('a+')
             fp.seek(0)
             self.update(dict(csv.reader(fp)))
         else:
-            fp = open(filename, 'a+')
+            fp = file.open('a+')
         self._writer = csv.writer(fp)
 
     def __setitem__(self, key, value):
