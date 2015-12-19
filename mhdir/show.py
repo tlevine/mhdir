@@ -40,7 +40,7 @@ def _show(thing, increment = ('prev', 'show', 'next'),
     else:
         print('No messages')
 
-def prev(folder,
+def prev(folder = None, *,
          showproc = None, showmimeproc = None,
          nocheckmime: bool = False,
          noheader: bool = False,
@@ -62,7 +62,7 @@ def show(thing: str = None, *,
           nocheckmime=False, noheader=noheader,
           draft = draft, maildir = maildir)
 
-def next(folder,
+def next(folder = None, *,
          showproc = None, showmimeproc = None,
          nocheckmime: bool = False,
          noheader: bool = False,
