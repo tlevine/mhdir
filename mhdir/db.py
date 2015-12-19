@@ -66,15 +66,16 @@ class MHDir(object):
             return self._message_path.resolve()
 
     @message.setter
-    def message(self, target):
-        if target in self.messageid_path:
-            target = str(Path(target).relative_to(self._maildir))
+    def message(self, id_or_path):
+        if id_or_path in self.messageid_path:
+            id_or_path = Path(self.messageid_path[id_or_path])
+        if id_or_path.parent.name not in {'new', 'cur', 'tmp'} or \
+            id_or_path.parent.parent.parent != self._maildir:
+            raise ValueError('Message must be inside the maildir %s.' % self._maildir)
 
-        if target[:4] not in {'new/', 'cur/', 'tmp/'}:
-            raise ValueError('Message path must start with "new/", "cur/", or "tmp/".')
-        if '/' in target[4:]:
-            raise ValueError('Aside from the fourth character, the message path must contain no slashes.')
-
+        p = Path(id_or_path)
+        target = str(p.relative_to(p.parent.parent))
+        print(target)
         if self._message_path.is_symlink():
             self._message_path.unlink()
         self._message_path.symlink_to(target)
