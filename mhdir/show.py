@@ -46,12 +46,6 @@ SHOW_DOC = \
     :param noheader: Don't display the header
     :param draft: I don't understand this one.
     '''
-
-from copy import copy
 show.__doc__ = SHOW_DOC % 'Folder (+folder) or message (message-id) to display, defaults current message in current folder'
-prev = copy(show)
-prev.__name__ = 'prev'
 prev.__doc__ = SHOW_DOC % 'Folder (+folder) in which to display the previous message, defaults to current folder'
-next = copy(show)
-next.__name__ = 'next'
 next.__doc__ = SHOW_DOC % 'Folder (+folder) in which to display the next message, defaults to current folder'
