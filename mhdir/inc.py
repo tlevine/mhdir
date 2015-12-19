@@ -6,7 +6,6 @@ from .db import MHDir
 
 MAILDIR = Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
 
-
 PASSED = 'P' # the user has resent/forwarded/bounced this message to someone else.
 REPLIED = 'R' # the user has replied to this message.
 SEEN = 'S' # the user has viewed this message, though perhaps he didn't read all the way through it.
@@ -21,9 +20,11 @@ def inc():
     '''
     m = MHDir(MAILDIR)
     for folder in MAILDIR.iterdir():
+        if folder.name.startswith('.'):
+            continue
 
         # Move stuff from new to cur.
-        for mail in (folder / 'new'):
+        for mail in (folder / 'new').iterdir():
             if ':' in mail.name:
                 newname = mail.name
             else:
@@ -31,7 +32,7 @@ def inc():
             mail.rename(folder / 'cur' / newname)
 
         # Index the stuff in cur.
-        for mail in (folder / 'cur'):
+        for mail in (folder / 'cur').iterdir():
             if str(mail) not in m.path_messageid:
                 with mail.open('rb') as fp:
                     message_id = parse.message_id(fp)
