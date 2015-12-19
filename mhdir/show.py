@@ -17,26 +17,22 @@ from .db import MHDir
 
 MAILDIR = Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
 
-def show(thing,
+def show(increment: ('prev', 'show', 'next'), thing
          showproc = None, showmimeproc = None,
          nocheckmime: bool = False,
          noheader: bool = False,
          draft: bool = False,
          maildir: Path = MAILDIR):
 
-    mhdir = MHDir(MAILDIR)
+    mhdir = MHDir(maildir)
     if thing.startswith('+'):
         mhdir.folder = thing[1:]
     else:
         mhdir.message = thing
 
-def _show(mhdir,
-          showproc = None, showmimeproc = None,
-          nocheckmime: bool = False,
-          noheader: bool = False,
-          draft: bool = False,
-          maildir: Path = MAILDIR):
     if mhdir.message:
+        if increment in {'prev', 'next'}:
+            message.current = prev_cur_next(mhdir.message)[increment]
         with mhdir.message.open('rb') as fp:
             message = message_from_binary_file(fp)
         print(parse.body(message))
