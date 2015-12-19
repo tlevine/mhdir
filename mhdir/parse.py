@@ -18,13 +18,29 @@ def message_id(fp):
 def body(message):
     if message.is_multipart():
         payload = message.get_payload()[0].get_payload(decode = True)
-        try:
-            body = decode_charset(message, payload)
-        except ValueError:
-            body = ''
+        if payload:
+            try:
+                body = decode_charset(message, payload)
+            except ValueError:
+                body = ''
+        else:
+            body = message.get_payload()[0]
     else:
         body = message.get_payload()
 
     if 'html' in message.get_content_type().lower():
         body = clean_html(body)
     return body
+
+def decode_charset(message, payload):
+    '''
+    Decode a payload and clean the HTML if appropriate.
+    '''
+    base_charsets = []
+    charsets = list(filter(None, message.get_charsets()))
+    for charset in charsets + base_charsets:
+        try:
+            return payload.decode(charset)
+        except UnicodeDecodeError:
+            pass
+    raise ValueError('Could not determine charset')

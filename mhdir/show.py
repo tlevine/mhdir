@@ -25,10 +25,11 @@ def _show(thing, increment = ('prev', 'show', 'next'),
           maildir: Path = MAILDIR):
 
     mhdir = MHDir(maildir)
-    if thing.startswith('+'):
-        mhdir.folder = thing[1:]
-    else:
-        mhdir.message = thing
+    if thing:
+        if thing.startswith('+'):
+            mhdir.folder = thing[1:]
+        else:
+            mhdir.message = thing
 
     if mhdir.message:
         if increment in {'prev', 'next'}:
@@ -50,7 +51,7 @@ def prev(folder,
           nocheckmime=False, noheader=noheader,
           draft = draft, maildir = maildir)
 
-def show(thing,
+def show(thing: str = None, *,
          showproc = None, showmimeproc = None,
          nocheckmime: bool = False,
          noheader: bool = False,
