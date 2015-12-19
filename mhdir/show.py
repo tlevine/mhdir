@@ -46,6 +46,15 @@ def prev(folder = None, *,
          noheader: bool = False,
          draft: bool = False,
          maildir: Path = MAILDIR):
+    '''
+    :param folder: Folder (+folder) in which to display the previous message, defaults to current folder
+    :param showproc: Program to display text messages, if you don't want to use the default
+    :param showmimeproc: Program to display MIME messages, if you don't want to use the default
+    :param nocheckmime: Don't check for MIME messages
+    :param noheader: Don't display the header
+    :param draft: I don't understand this one.
+    :param maildir: Maildir to query
+    '''
     _show(folder, increment = 'prev',
           showproc=showproc, showmimeproc=showmimeproc,
           nocheckmime=False, noheader=noheader,
@@ -57,6 +66,15 @@ def show(thing: str = None, *,
          noheader: bool = False,
          draft: bool = False,
          maildir: Path = MAILDIR):
+    '''
+    :param thing: Folder (+folder) or message (message-id) to display, defaults current message in current folder
+    :param showproc: Program to display text messages, if you don't want to use the default
+    :param showmimeproc: Program to display MIME messages, if you don't want to use the default
+    :param nocheckmime: Don't check for MIME messages
+    :param noheader: Don't display the header
+    :param draft: I don't understand this one.
+    :param maildir: Maildir to query
+    '''
     _show(thing, increment = 'show',
           showproc=showproc, showmimeproc=showmimeproc,
           nocheckmime=False, noheader=noheader,
@@ -68,6 +86,15 @@ def next(folder = None, *,
          noheader: bool = False,
          draft: bool = False,
          maildir: Path = MAILDIR):
+    '''
+    :param folder: Folder (+folder) in which to display the next message, defaults to current folder
+    :param showproc: Program to display text messages, if you don't want to use the default
+    :param showmimeproc: Program to display MIME messages, if you don't want to use the default
+    :param nocheckmime: Don't check for MIME messages
+    :param noheader: Don't display the header
+    :param draft: I don't understand this one.
+    :param maildir: Maildir to query
+    '''
     _show(folder, increment = 'next',
           showproc=showproc, showmimeproc=showmimeproc,
           nocheckmime=False, noheader=noheader,
@@ -83,6 +110,3 @@ SHOW_DOC = \
     :param noheader: Don't display the header
     :param draft: I don't understand this one.
     '''
-show.__doc__ = SHOW_DOC % ':param thing: Folder (+folder) or message (message-id) to display, defaults current message in current folder'
-prev.__doc__ = SHOW_DOC % ':param folder: Folder (+folder) in which to display the previous message, defaults to current folder'
-next.__doc__ = SHOW_DOC % ':param folder: Folder (+folder) in which to display the next message, defaults to current folder'
