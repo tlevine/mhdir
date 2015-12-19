@@ -24,13 +24,20 @@ def show(thing,
          draft: bool = False,
          maildir: Path = MAILDIR):
 
-    current = MHDir(MAILDIR)
+    mhdir = MHDir(MAILDIR)
     if thing.startswith('+'):
-        current.folder = thing[1:]
+        mhdir.folder = thing[1:]
     else:
-        current.message = thing
-    if current.message:
-        with current.message.open('rb') as fp:
+        mhdir.message = thing
+
+def _show(mhdir,
+          showproc = None, showmimeproc = None,
+          nocheckmime: bool = False,
+          noheader: bool = False,
+          draft: bool = False,
+          maildir: Path = MAILDIR):
+    if mhdir.message:
+        with mhdir.message.open('rb') as fp:
             message = message_from_binary_file(fp)
         print(parse.body(message))
     else:
