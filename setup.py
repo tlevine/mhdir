@@ -12,7 +12,7 @@ setup(
     packages = ['mhdir'],
     install_requires = [
         'horetu',
-        'lxml',
+    #   'lxml',
     ],
     classifiers=[
         'Programming Language :: Python :: 3.4',

@@ -1,8 +1,12 @@
 import logging
 import re
 
-from lxml.html.clean import clean_html
-
+try:
+    from lxml.html.clean import clean_html
+except ImportError:
+    def clean_html(x):
+        logger.warning('Install lxml if you want to fix this email message.')
+        return x
 logger = logging.getLogger(__name__)
 
 MESSAGE_ID = re.compile(br'^message-id: <([^>]*)> *$', flags = re.IGNORECASE)
