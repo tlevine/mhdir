@@ -1,5 +1,7 @@
 import os
 
+from pathlib import Path
+
 from . import parse
 from . import db
 
@@ -20,7 +22,7 @@ def inc(maildir=None):
         maildir = configuration['maildir']
 
     m = db.MHDir(maildir)
-    for folder in maildir.iterdir():
+    for folder in Path(maildir).iterdir():
         if folder.name.startswith('.'):
             continue
 
