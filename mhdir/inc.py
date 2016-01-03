@@ -2,9 +2,7 @@ import os
 from pathlib import Path
 
 from . import parse
-from .db import MHDir
-
-MAILDIR = Path('/Users/t/tom/maildir/hot/_@thomaslevine.com/')
+from . import db
 
 PASSED = 'P' # the user has resent/forwarded/bounced this message to someone else.
 REPLIED = 'R' # the user has replied to this message.
@@ -18,8 +16,12 @@ def inc():
     1. If the message-id lookup doesn't exist, read everything in "cur" and add to the message-id lookup cache.
     2. Read everything in "new", add it to the message-id cache, and move it to "cur".
     '''
-    m = MHDir(MAILDIR)
-    for folder in MAILDIR.iterdir():
+    configuration = db.read_configuration()
+    if not maildir:
+        maildir = configuration['maildir']
+
+    m = db.MHDir(maildir)
+    for folder in maildir.iterdir():
         if folder.name.startswith('.'):
             continue
 

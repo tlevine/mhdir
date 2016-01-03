@@ -115,3 +115,9 @@ class CSVMap(dict):
     def __setitem__(self, key, value):
         self._writer.writerow((key, value))
         super(CSVMap, self).__setitem__(key, value)
+
+def read_configuration():
+    maildir = os.path.expanduser('~/safe/maildir/hot/_@thomaslevine.com/')
+    return {
+        'maildir': maildir,
+    }
