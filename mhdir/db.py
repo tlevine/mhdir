@@ -21,8 +21,8 @@ class MHDir(object):
         except FileExistsError:
             pass
         
-        self.messageid_path = CSVMap(maildir / '.mhdir-messageid-path')
-        self.path_messageid = CSVMap(maildir / '.mhdir-path-messageid')
+        self.messageid_path = CSVMap(self._maildir / '.mhdir-messageid-path')
+        self.path_messageid = CSVMap(self._maildir / '.mhdir-path-messageid')
 
     def __repr__(self):
         return 'Current(%s)' % repr(self._maildir)

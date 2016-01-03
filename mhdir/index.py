@@ -10,7 +10,7 @@ TRASHED = 'T' # the user has moved this message to the trash; the trash will be 
 DRAFT = 'D' # the user considers this message a draft; toggled at user discretion.
 FLAGGED = 'F' # user-defined flag; toggled at user discretion. 
 
-def inc():
+def inc(maildir=None):
     '''
     1. If the message-id lookup doesn't exist, read everything in "cur" and add to the message-id lookup cache.
     2. Read everything in "new", add it to the message-id cache, and move it to "cur".
