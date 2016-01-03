@@ -78,7 +78,6 @@ class MHDir(object):
 
         p = Path(id_or_path)
         target = str(p.relative_to(p.parent.parent))
-        print(target)
         if self._message_path.is_symlink():
             self._message_path.unlink()
         self._message_path.symlink_to(target)
