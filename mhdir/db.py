@@ -57,9 +57,12 @@ class MHDir(object):
             except StopIteration:
                 pass
 
+    def has_current_folder(self):
+        return self._folder_path.is_symlink()
+
     @property
     def _message_path(self):
-        if not self._folder_path.is_symlink():
+        if not self.has_current_folder():
             raise ValueError('Set the current folder first.')
         return self._maildir / os.readlink(str(self._folder_path)) / '.mhdir-current-message'
 

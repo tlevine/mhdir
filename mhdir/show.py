@@ -9,6 +9,7 @@ show, prev, next
 whatnext
 
 '''
+import sys
 from email import message_from_binary_file
 
 from . import parse
@@ -45,6 +46,14 @@ def m(increment: ('prev', 'show', 'next'),
             mhdir.folder = thing[1:]
         else:
             mhdir.message = thing
+
+    if not (thing or mhdir.has_current_folder()):
+        sys.stderr.write('''Set the current folder, like this.
+
+  m show +INBOX
+
+''')
+        exit(1)
 
     if mhdir.message:
         if increment in {'prev', 'next'}:
