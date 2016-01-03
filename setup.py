@@ -7,7 +7,10 @@ setup(
     author = 'Thomas Levine',
     author_email = '_@thomaslevine.com',
     url = 'http://dada.pink/mhdir/',
-    entry_points = {'console_scripts': ['m = mhdir:m']},
+    entry_points = {'console_scripts': [
+        'm = mhdir:m',
+        'inc = mhdir:inc',
+    ]},
     license = 'AGPL',
     packages = ['mhdir'],
     install_requires = [

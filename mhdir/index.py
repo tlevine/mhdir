@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 
 from . import parse
 from . import db

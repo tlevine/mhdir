@@ -9,7 +9,6 @@ show, prev, next
 whatnext
 
 '''
-from pathlib import Path
 from email import message_from_binary_file
 
 from . import parse
@@ -23,6 +22,8 @@ def m(increment: ('prev', 'show', 'next'),
       draft: bool = False,
       maildir = None):
     '''
+    Show messages
+
     :param increment: Previous, current, or next message
     :param thing: Folder (+folder) or message (message-id) 
         to display, defaults current message in current folder
@@ -37,7 +38,6 @@ def m(increment: ('prev', 'show', 'next'),
     configuration = db.read_configuration()
     if not maildir:
         maildir = configuration['maildir']
-
 
     mhdir = db.MHDir(maildir)
     if thing:

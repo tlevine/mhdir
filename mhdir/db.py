@@ -15,8 +15,11 @@ import csv
 class MHDir(object):
     # TODO: Store this as formal IMAP messages so they sync
     def __init__(self, maildir):
-        self._maildir = maildir
-        self._maildir.mkdir(parents = True)
+        self._maildir = Path(maildir)
+        try:
+            self._maildir.mkdir(parents = True)
+        except FileExistsError:
+            pass
         
         self.messageid_path = CSVMap(maildir / '.mhdir-messageid-path')
         self.path_messageid = CSVMap(maildir / '.mhdir-path-messageid')
